@@ -206,7 +206,7 @@ int main(int argc, char **argv) {
 
 	// Randomized the gradient
 	for (int i = 0; i < ground_truth -> size; ++i) {
-		ground_truth -> gradient[i] = get_random(100); 
+		ground_truth -> gradient[i] = get_random(10); 
 		contract -> gradient[i] = ground_truth -> gradient[i];
 	}
 
@@ -215,6 +215,13 @@ int main(int argc, char **argv) {
 	time_ms(end);
 
 	cout << "GPU backward time: " << difftime_ms(end, start) << endl;
+
+	// Empty CPU gradient first
+	for (int a = 0; a < N; ++a) {
+		for (int i = 0; i < tensors[a] -> size; ++i) {
+			tensors[a] -> gradient[i] = 0.0;
+		}
+	}
 
 	time_ms(start);
 	ground_truth -> backward();
